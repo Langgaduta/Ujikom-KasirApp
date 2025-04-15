@@ -24,7 +24,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="harga" class="form-label">Harga</label>
-                            <input type="number" class="form-control" name="harga" id="harga">
+                            <input type="text" class="form-control" name="harga" id="harga">
                         </div>
                         <div class="mb-3">
                             <label for="stok" class="form-label">Stok</label>
@@ -39,3 +39,33 @@
         </div>
     </div>
 </div>
+
+<script>
+    const hargaInput = document.getElementById('harga');
+
+    hargaInput.addEventListener('input', function (e) {
+        // Ambil angka dari input, hapus semua karakter selain digit
+        let value = e.target.value.replace(/[^,\d]/g, '');
+        if (value) {
+            // Format ke Rupiah
+            value = formatRupiah(value, 'Rp ');
+        }
+        e.target.value = value;
+    });
+
+    function formatRupiah(angka, prefix) {
+        const numberString = angka.replace(/[^,\d]/g, '').toString();
+        const split = numberString.split(',');
+        let sisa = split[0].length % 3;
+        let rupiah = split[0].substr(0, sisa);
+        const ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            const separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix === undefined ? rupiah : (rupiah ? prefix + rupiah : '');
+    }
+</script>

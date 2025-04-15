@@ -63,6 +63,7 @@
                                 </tfoot>
                             </table>
                         </div>
+
                     </div>
                     <p class="mt-3">
                         Member tidak terdaftar atau ingin daftar member baru? <a
@@ -123,4 +124,6 @@
 
         form.submit();
     }
+
+    
 </script>

@@ -18,9 +18,7 @@ return new class extends Migration
         Schema::create('penjualan', function (Blueprint $table) {
             $table->id();
             $table->string('nama_pelanggan');
-            // $table->foreignId('user_id')->constrained('users');
             $table->bigInteger("user_id");
-            // $table->foreignId('member_id')->nullable()->constrained('members');
             $table->bigInteger("member_id");
             $table->date('tanggal_penjualan');
             $table->integer('total_harga');
