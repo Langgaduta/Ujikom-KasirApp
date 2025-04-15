@@ -2,29 +2,21 @@
 
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Admin\DashboardController;
 
 
 //admin
 
 use App\Http\Controllers\Admin\AdminAuthController;
-
 use App\Http\Controllers\Admin\ProdukController;
-
 use App\Http\Controllers\Admin\PenjualanController;
-
 use App\Http\Controllers\Admin\UserController;
 
 
 //user
-
 use App\Http\Controllers\User\UserAuthController;
-
 use App\Http\Controllers\User\ProdukController as ProdukUserController;
-
 use App\Http\Controllers\User\PenjualanController as PenjualanUserController;
-
 use App\Http\Controllers\User\MemberController;
 
 
@@ -49,14 +41,22 @@ use App\Http\Controllers\User\MemberController;
 */
 
 use App\Exports\PenjualanExport;
-
 use App\Exports\PenjualanExportAdmin;
-
 use Maatwebsite\Excel\Facades\Excel;
 
+Route::get('/admin/penjualan/export', function () {
+    return Excel::download(new PenjualanExportadmin, 'penjualan.xlsx');
+})->name('admin.penjualan.export');
 
+Route::get('/user/penjualan/export', function () {
+    return Excel::download(new PenjualanExport, 'penjualan.xlsx');
+})->name('user.penjualan.export');
 
+Route::get('user/penjualan/{id}/export-pdf', [PenjualanUserController::class, 'exportPdf'])
+    ->name('user.penjualan.exportPdf');
 
+Route::get('admin/penjualan/{id}/export-pdf', [PenjualanController::class, 'exportPdf'])
+    ->name('admin.penjualan.exportPdf');
 
 Route::prefix('admin')->group(function () {
 

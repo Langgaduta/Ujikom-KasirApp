@@ -10,7 +10,7 @@
     <div class="row">
         <div class="row">
             <div class="col-md-12 text-end">
-                <a href="" class="btn btn-success mt-3">Export Excel</a>
+                <a href="{{ route('user.penjualan.export') }}" class="btn btn-success mt-3">Export Excel</a>
                 <a href="{{ url('/user/penjualan/pilihProduk') }}" class="btn btn-primary mt-3">Tambah Penjualan +</a>
             </div>
         </div>
@@ -59,11 +59,11 @@
                                                             <p><strong>Member Status:</strong>
                                                                 {{ $penjualan->member_id ? 'Member' : 'Non Member' }}
                                                             </p>
-                                                            <p><strong>No. HP:</strong>
-                                                                {{ $penjualan->member?->no_hp ?? '-' }}</p>
                                                             <p><strong>Poin Member:</strong>
-                                                                {{ $penjualan->poin_digunakan > 0 ? $penjualan->poin_digunakan : '-' }}
+                                                                {{ $penjualan->poin_digunakan > 0 ? '-' : ($penjualan->member ? $penjualan->member->poin : '-') }}
                                                             </p>
+
+
                                                         </div>
                                                         <div class="col-md-7">
                                                             <p><strong>Bergabung sejak:</strong>
@@ -127,7 +127,7 @@
                                     </div>
                                 </div>
 
-                                <a href=""
+                                <a href="{{ route('user.penjualan.exportPdf', $penjualan->id) }}"
                                     class="btn btn-primary btn-sm">
                                     Unduh Bukti
                                 </a>

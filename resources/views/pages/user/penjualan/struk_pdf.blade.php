@@ -15,10 +15,10 @@
 </head>
 <body>
     <h3 class="text-center">Struk Penjualan</h3>
-    <p><strong>No. HP:</strong> 081234567890</p>
-    <p><strong>Nama:</strong> John Doe</p>
-    <p><strong>Tanggal Penjualan:</strong> 15 April 2025</p>
-    <p><strong>Invoice:</strong> #12345</p>
+    <p><strong>No. HP:</strong> {{ $penjualan->member->no_hp ?? '-' }}</p>
+    <p><strong>Nama:</strong> {{ $penjualan->member->nama ?? '-' }}</p>
+    <p><strong>Tanggal Penjualan:</strong> {{ $penjualan->created_at->format('d F Y') }}</p>
+    <p><strong>Invoice:</strong> #{{ $penjualan->id }}</p>
     <table>
         <thead>
             <tr>
@@ -29,22 +29,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Produk A</td>
-                <td>Rp 100,000</td>
-                <td>2</td>
-                <td>Rp 200,000</td>
-            </tr>
-            <tr>
-                <td>Produk B</td>
-                <td>Rp 50,000</td>
-                <td>1</td>
-                <td>Rp 50,000</td>
-            </tr>
+            @foreach ($penjualan->detail_penjualan as $detail)
+                <tr>
+                    <td>{{ $detail->produk->nama_produk }}</td>
+                    <td>Rp {{ number_format($detail->produk->harga, 0, ',', '.') }}</td>
+                    <td>{{ $detail->jumlah }}</td>
+                    <td>Rp {{ number_format($detail->jumlah * $detail->produk->harga, 0, ',', '.') }}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
-    <p><strong>Total:</strong> Rp 250,000</p>
-    <p><strong>Kasir:</strong> Jane Smith</p>
-    <p><strong>Kembalian:</strong> Rp 50,000</p>
+    <p><strong>Total:</strong> Rp {{ number_format($penjualan->total_harga, 0, ',', '.') }}</p>
+    <p><strong>Kasir:</strong> {{ $penjualan->user->name }}</p>
+    <p><strong>Kembalian:</strong> Rp {{ number_format($penjualan->kembalian, 0, ',', '.') }}</p>
 </body>
 </html>

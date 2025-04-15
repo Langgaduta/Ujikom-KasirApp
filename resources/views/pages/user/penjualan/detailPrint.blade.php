@@ -13,7 +13,7 @@
         <a href="{{ route('user.penjualan.index') }}" class="btn btn-secondary me-2">
             <i class="fas fa-arrow-left"></i> Kembali
         </a>
-        <a href="#" class="btn btn-primary">
+        <a href="{{ route('user.penjualan.exportPdf', $penjualan->id) }}" class="btn btn-primary">
             <i class="fas fa-download"></i> Unduh Struk
         </a>
     </div>
@@ -25,18 +25,18 @@
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <strong>No. HP :</strong>  081234567890
+                        <strong>No. HP :</strong>  {{ $penjualan->member->no_hp ?? '-' }}
                     </div>
                     <div class="col-md-6 text-end">
-                        <strong>Tanggal Penjualan :</strong> 15 April 2025
+                        <strong>Tanggal Penjualan :</strong> {{ $penjualan->created_at->format('d F Y') }}
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <strong>Nama :</strong> John Doe
+                        <strong>Nama :</strong> {{ $penjualan->member->nama ?? '-' }}
                     </div>
                     <div class="col-md-6 text-end">
-                        <strong>Invoice : </strong> #123456
+                        <strong>Invoice : </strong> #{{ $penjualan->id }}
                     </div>
                 </div>
 
@@ -50,37 +50,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Produk A</td>
-                            <td>Rp 100.000</td>
-                            <td>2</td>
-                            <td>Rp 200.000</td>
-                        </tr>
-                        <tr>
-                            <td>Produk B</td>
-                            <td>Rp 150.000</td>
-                            <td>1</td>
-                            <td>Rp 150.000</td>
-                        </tr>
+                        @foreach ($penjualan->detail_penjualan as $detail)
+                            <tr>
+                                <td>{{ $detail->produk->nama_produk }}</td>
+                                <td>Rp {{ number_format($detail->produk->harga, 0, ',', '.') }}</td>
+                                <td>{{ $detail->jumlah }}</td>
+                                <td>Rp {{ number_format($detail->jumlah * $detail->produk->harga, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
 
                 <div class="row text-center mt-4">
                     <div class="col-md-3 border-end">
                         <strong>Point Digunakan</strong><br>
-                        500
+                        {{ $penjualan->poin_digunakan ?? 0 }}
                     </div>
                     <div class="col-md-3 border-end">
                         <strong>Kasir</strong><br>
-                        Jane Doe
+                        {{ $penjualan->user->name }}
                     </div>
                     <div class="col-md-3 border-end">
                         <strong>Kembalian</strong><br>
-                        Rp 50.000
+                        Rp {{ number_format($penjualan->kembalian, 0, ',', '.') }}
                     </div>
                     <div class="col-md-3">
                         <strong>Total</strong><br>
-                        Rp 300.000
+                        Rp {{ number_format($penjualan->total_harga, 0, ',', '.') }}
                     </div>
                 </div>
             </div>
