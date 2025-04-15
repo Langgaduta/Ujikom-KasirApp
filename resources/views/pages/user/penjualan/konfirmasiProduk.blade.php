@@ -2,6 +2,22 @@
 @include('layout.navbar-user')
 
 <div class="container mt-5">
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <h3>Produk yang dipilih</h3>
 
     <div class="container justify-content-center align-items-center">
@@ -21,62 +37,90 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Static Products Data -->
-                                    <tr>
-                                        <td>Produk A</td>
-                                        <td>2</td>
-                                        <td>Rp 50,000</td>
-                                        <td>Rp 100,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Produk B</td>
-                                        <td>1</td>
-                                        <td>Rp 75,000</td>
-                                        <td>Rp 75,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Produk C</td>
-                                        <td>3</td>
-                                        <td>Rp 30,000</td>
-                                        <td>Rp 90,000</td>
-                                    </tr>
+                                    @php
+                                        $total = 0;
+                                    @endphp
+
+                                        @foreach ($produk_terpilih as $item)
+                                            <tr>
+                                                <td>{{ $item['produk']->nama_produk }}</td>
+                                                <td>{{ $item['jumlah'] }}</td>
+                                                <td>{{ number_format($item['produk']->harga, 0, ',', '.') }}</td>
+                                                <td>{{ number_format($item['subtotal'], 0, ',', '.') }}</td>
+                                            </tr>
+                                            <input type="hidden" name="produk_id[]" value="{{ $item['produk']->id }}">
+                                            <input type="hidden" name="qty[]" value="{{ $item['jumlah'] }}">
+                                            @php
+                                                $total += $item['subtotal'];
+                                            @endphp
+                                        @endforeach
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <th colspan="3" class="text-end">Total</th>
-                                        <th>Rp 265,000</th>
+                                        <th>{{ number_format($total_harga, 0, ',', '.') }}</th>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
                     </div>
                     <p class="mt-3">
-                        Member tidak terdaftar atau ingin daftar member baru? <a href="{{ route('user.member.create') }}">Tambah Member</a>
+                        Member tidak terdaftar atau ingin daftar member baru? <a
+                            href="{{ route('user.member.create') }}">Tambah Member</a>
                     </p>
                 </div>
+
+
 
                 <div class="col-md-6">
                     <div class="mb-3">
                         <label>Status Pelanggan:</label><br>
-                        <input type="radio" name="status_pelanggan" value="non member" checked> Non Member
-                        <input type="radio" name="status_pelanggan" value="member"> Member
+                        <input type="radio" name="status_pelanggan" value="non member" id="status_non_member" checked
+                            onclick="togglePhoneInput()"> Non Member
+                        <input type="radio" name="status_pelanggan" value="member" id="status_member"
+                            onclick="togglePhoneInput()"> Member
                     </div>
 
-                    <div class="mb-3">
-                        <label for="no_hp">No. Telepon (Jika Member)</label>
-                        <input type="text" class="form-control" name="no_hp">
+                    <div class="mb-3" id="phone-input" style="display: none;">
+                        <label for="no_hp">No. Telepon</label>
+                        <input type="text" class="form-control" name="no_hp" id="no_hp"
+                            value="{{ old('no_hp') }}">
+
                     </div>
 
                     <div class="mb-3">
                         <label for="dibayar">Total yang Dibayarkan (Rp)</label>
-                        <input type="number" class="form-control" name="dibayar" required>
+                        <input type="number" class="form-control" name="dibayar" id="dibayar" required>
                     </div>
 
                     <div class="mb-3 text-end">
-                        <button type="submit" class="btn btn-primary">Pesan</button>
+                        <button type="button" class="btn btn-primary" onclick="handleSubmit()">Pesan</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
+<script>
+    function togglePhoneInput() {
+        const phoneInput = document.getElementById('phone-input');
+        const isMember = document.getElementById('status_member').checked;
+        phoneInput.style.display = isMember ? 'block' : 'none';
+    }
+
+    window.onload = togglePhoneInput;
+
+    function handleSubmit() {
+        const statusMember = document.getElementById('status_member').checked;
+        const form = document.getElementById('penjualanForm');
+
+        if (statusMember) {
+            form.action = "{{ route('user.penjualan.dataMember') }}";
+        } else {
+            form.action = "{{ route('user.penjualan.simpanNonMember') }}";
+        }
+
+        form.submit();
+    }
+</script>
