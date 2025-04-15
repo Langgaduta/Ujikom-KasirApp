@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Penjualan;
 use App\Models\Produk;
 use App\Models\Member;
+use App\Models\DetailPenjualan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PenjualanController extends Controller
@@ -73,6 +75,66 @@ class PenjualanController extends Controller
 
         return view('pages.user.penjualan.konfirmasiProduk', compact('produk_terpilih', 'total_harga'));
     }
+
+    public function simpanNonMember(Request $request)
+    {
+        $request->validate([
+            'produk_id' => 'required|array',
+            'qty' => 'required|array',
+            'dibayar' => 'required|numeric|min:0',
+        ]);
+
+        $total_harga = 0;
+        $items = [];
+
+        foreach ($request->produk_id as $i => $id_produk) {
+            $produk = Produk::find($id_produk);
+            $jumlah = (int) $request->qty[$i];
+
+            if (!$produk) {
+                return back()->with('error', "Produk dengan ID $id_produk tidak ditemukan.");
+            }
+
+            if ($produk->stok < $jumlah) {
+                return back()->with('error', "Stok produk '{$produk->nama}' tidak mencukupi.");
+            }
+
+            $subtotal = $produk->harga * $jumlah;
+            $total_harga += $subtotal;
+
+            $items[] = [
+                'produk_id' => $produk->id,
+                'jumlah' => $jumlah,
+                'harga_satuan' => $produk->harga,
+                'sub_total' => $subtotal,
+            ];
+        }
+
+        if ($request->dibayar < $total_harga) {
+            return back()->with('error', 'Uang dibayar tidak mencukupi total harga.');
+        }
+
+        $penjualan = Penjualan::create([
+            'nama_pelanggan' => 'Non Member',
+            'user_id' => Auth::guard('user')->id(),
+            'tanggal_penjualan' => now(),
+            'total_harga' => $total_harga,
+            'uang_diberikan' => $request->dibayar,
+            'kembalian' => $request->dibayar - $total_harga,
+            'poin_digunakan' => 0,
+        ]);
+
+        foreach ($items as $item) {
+            DetailPenjualan::create(array_merge($item, ['penjualan_id' => $penjualan->id]));
+
+            $produk = Produk::find($item['produk_id']);
+            $produk->decrement('stok', $item['jumlah']);
+        }
+
+        return redirect()->route('user.penjualan.index', ['penjualanId' => $penjualan->id])
+            ->with('success', 'Data penjualan berhasil disimpan untuk member.');
+    }
+
 
 
 }

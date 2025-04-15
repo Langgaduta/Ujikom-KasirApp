@@ -73,43 +73,26 @@ Route::prefix('admin')->group(function () {
         //produk
 
         Route::get('/produk', [ProdukController::class, 'index'])->name('admin.produk.index');
-
         Route::get('/produk/create', [ProdukController::class, 'create'])->name('admin.produk.create');
-
         Route::post('/produk', [ProdukController::class, 'store'])->name('admin.produk.store');
-
         Route::get('/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('admin.produk.edit');
-
         Route::get('/produk/{produk}/stok', [ProdukController::class, 'editStok'])->name('admin.produk.editStok');
-
         Route::put('/produk/{produk}', [ProdukController::class, 'update'])->name('admin.produk.update');
-
         Route::put('/produk/{produk}/stok', [ProdukController::class, 'updateStok'])->name('admin.produk.updateStok');
-
         Route::delete('/produk/{produk}', [ProdukController::class, 'destroy'])->name('admin.produk.destroy');
-
-
 
         //penjualan
 
         Route::get('/penjualan', [PenjualanController::class, 'index'])->name('admin.penjualan.index');
-
         Route::get('/penjualan/create', [PenjualanController::class, 'create'])->name('admin.penjualan.create');
-
-
 
         //user
 
         Route::get('/user', [UserController::class, 'index'])->name('admin.user.index');
-
         Route::get('/user/create', [UserController::class, 'create'])->name('admin.user.create');
-
         Route::post('/user', [UserController::class, 'store'])->name('admin.user.store');
-
         Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('admin.user.edit');
-
         Route::put('/user/{user}', [UserController::class, 'update'])->name('admin.user.update');
-
         Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('admin.user.destroy');
 
     });
@@ -122,47 +105,30 @@ Route::prefix('admin')->group(function () {
 Route::prefix('user')->group(function () {
 
     Route::get('/login', [UserAuthController::class, 'showLoginForm'])->name('user.login.index');
-
     Route::post('/login', [UserAuthController::class, 'login']);
-
     Route::get('/logout', [UserAuthController::class, 'logout'])->name('user.logout');
-
 
     Route::middleware('user')->group(function () {
 
         Route::get('/dashboard', [UserAuthController::class, 'dashboard'])->name('user.dashboard.index');
 
-
         //produk
-
         Route::get('/produk', [ProdukUserController::class, 'index'])->name('user.produk.index');
 
-
         //Member
-
         Route::get('/member', [MemberController::class, 'index'])->name('user.member.index');
-
         Route::get('/member/create', [MemberController::class, 'create'])->name('user.member.create');
-
         Route::post('/member/store', [MemberController::class, 'store'])->name('user.member.store');
-
 
         //penjualan
 
         Route::get('/penjualan', [PenjualanUserController::class, 'index'])->name('user.penjualan.index');
-
         Route::get('/penjualan/pilihProduk', [PenjualanUserController::class, 'pilihProduk'])->name('user.penjualan.pilihProduk');
-
         Route::post('/penjualan/simpanNonMember', [PenjualanUserController::class, 'simpanNonMember'])->name('user.penjualan.simpanNonMember');
-
         Route::post('/penjualan/simpanMember', [PenjualanUserController::class, 'simpanMember'])->name('user.penjualan.simpanMember');
-
         Route::get('/penjualan/konfirmasiProduk', [PenjualanUserController::class, 'konfirmasiProduk'])->name('user.penjualan.konfirmasiProduk');
-
         Route::get('/penjualan/dataMember', [PenjualanUserController::class, 'dataMember'])->name('user.penjualan.dataMember');
-
         Route::post('/penjualan/dataMember', [PenjualanUserController::class, 'storeDataMember'])->name('user.penjualan.storeDataMember');
-
         Route::get('/penjualan/detailPrint/{penjualanId}', [PenjualanUserController::class, 'detailPrint'])->name('user.penjualan.detailPrint');
 
     });
