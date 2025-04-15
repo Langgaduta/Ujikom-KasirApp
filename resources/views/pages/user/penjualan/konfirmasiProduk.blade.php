@@ -92,6 +92,7 @@
                     <div class="mb-3">
                         <label for="dibayar">Total yang Dibayarkan (Rp)</label>
                         <input type="number" class="form-control" name="dibayar" id="dibayar" required>
+                        <div id="rupiah-display" class="form-text fw-bold mt-1"></div>
                     </div>
 
                     <div class="mb-3 text-end">
@@ -125,5 +126,17 @@
         form.submit();
     }
 
-    
+
+    const inputDibayar = document.getElementById('dibayar');
+    const rupiahDisplay = document.getElementById('rupiah-display');
+
+    inputDibayar.addEventListener('input', function () {
+        const value = parseInt(this.value.replace(/\D/g, '')) || 0;
+        rupiahDisplay.textContent = value ? formatRupiah(value) : '';
+    });
+
+    function formatRupiah(angka) {
+        return 'Rp ' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
 </script>
