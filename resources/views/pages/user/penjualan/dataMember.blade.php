@@ -6,7 +6,7 @@
         <!-- Dummy Error Section -->
         <div class="alert alert-danger" style="display:none;">
             <ul>
-                <li>Nama Member tidak boleh kosong</li>
+                <li>Nama Member tidak boleh kosongg</li>
             </ul>
         </div>
 
