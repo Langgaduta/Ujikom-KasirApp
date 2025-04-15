@@ -1,7 +1,17 @@
 @include('layout.app')
 @include('layout.navbar-admin')
 
+
 <div class="container">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <div class="row mt-5">
         <h3>Tambah User</h3>
     </div>
@@ -9,15 +19,16 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <form action="#" method="POST">
-                        <!-- @csrf -->
+                    <form action="{{ route('admin.user.store') }}" method="POST">
+                        @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Nama lengkap">
+                            <label for="nama_produk" class="form-label">Nama</label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                aria-describedby="emailHelp">
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" name="email" id="email" placeholder="email@example.com">
+                            <input type="email" class="form-control" name="email" id="email">
                         </div>
                         <div class="mb-3">
                             <label for="role" class="form-label">Role</label>
@@ -28,17 +39,18 @@
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" name="password" id="password" placeholder="******">
+                            <input type="password" class="form-control" name="password" id="password">
                         </div>
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="******">
+                            <input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Tambah</button>
-                        <a href="#" class="btn btn-secondary mt-3">Kembali</a>
+                        <a href="{{ route('admin.user.index') }}" class="btn btn-secondary mt-3">Kembali</a>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

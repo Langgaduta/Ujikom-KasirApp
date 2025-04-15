@@ -9,7 +9,7 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
         body {
-            background-color: rgb(238, 241, 242);
+            background-color: rgb(238, 241, 242); /* Background putih */
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -18,7 +18,7 @@
 
         .card {
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Efek shadow pada card */
         }
 
         .btn-primary {
@@ -40,7 +40,8 @@
                 <div class="card">
                     <div class="card-body p-5">
                         <h3 class="text-center mb-4">Login</h3>
-                        <form>
+                        <form action="/user/login" method="POST">
+                            @csrf
                             <div class="mb-3">
                                 <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
@@ -65,7 +66,6 @@
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>

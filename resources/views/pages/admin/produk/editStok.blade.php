@@ -10,22 +10,22 @@
         <div class="col">
             <div class="card">
                 <div class="card-body">
-                    <form action="#" method="POST">
-                        <!-- @csrf -->
-                        <!-- @method('PUT') -->
+                    <form action="{{ route('admin.produk.updateStok', $produk->id) }}" method="POST">
+                        @csrf
+                        @method('PUT')
 
                         <div class="mb-3">
                             <label for="nama_produk" class="form-label">Nama Produk</label>
-                            <input type="text" class="form-control" id="nama_produk" name="nama_produk" value="Contoh Produk" required disabled>
+                            <input type="text" class="form-control" id="nama_produk" name="nama_produk" value="{{ old('nama_produk', $produk->nama_produk) }}" required disabled>
                         </div>
 
                         <div class="mb-3">
                             <label for="stok" class="form-label">Stok</label>
-                            <input type="number" class="form-control" id="stok" name="stok" value="50" required>
+                            <input type="number" class="form-control" id="stok" name="stok" value="{{ old('stok', $produk->stok) }}" required>
                         </div>
 
                         <button type="submit" class="btn btn-primary mt-3">Update</button>
-                        <a href="#" class="btn btn-secondary mt-3">Kembali</a>
+                        <a href="{{ route('admin.produk.index') }}" class="btn btn-secondary mt-3">Kembali</a>
                     </form>
                 </div>
             </div>

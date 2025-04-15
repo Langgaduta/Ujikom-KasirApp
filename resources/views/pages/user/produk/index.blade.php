@@ -18,15 +18,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($produks as $index => $produk)
                             <tr>
-                                <th scope="row">1</th>
-                                <td>Handphone</td>
+                                <th scope="row">{{ $index + 1 }}</th>
+                                <td>{{ $produk->nama_produk }}</td>
                                 <td>
-                                    <img src="" alt="Foto Produk" width="50">
+                                    <img src="{{ asset('storage/' . $produk->foto_produk) }}" alt="Foto Produk" width="50">
                                 </td>
-                                <td>Rp 1.000.000</td>
-                                <td>10</td>
+                                <td>{{ number_format($produk->harga, 0, ',', '.') }}</td>
+                                <td>{{ $produk->stok }}</td>
                             </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
